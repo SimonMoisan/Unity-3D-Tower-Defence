@@ -4,40 +4,41 @@ using UnityEngine;
 
 public class Ennemy : MonoBehaviour
 {
-    [SerializeField] public float speed;
-    [SerializeField] public List<Transform> waypoints;
+    [SerializeField] public float health;
+    [SerializeField] public float worth;    //Money won when killed
+    [SerializeField] public float startSpeed;
+    [HideInInspector] public float speed;
+
     public GameObject explosion;
 
     private Transform target;
-    private int waypointIndex = 0;
 
     void Start()
     {
-        transform.position = EnnemyPath.points[waypointIndex].transform.position;
+        speed = startSpeed;
     }
 
-    void Update()
+    public void TakingDamage(float amount)
     {
-        MoveEnnemy();
+        health -= amount;
+        if(health <= 0f)
+        {
+            Die();
+        }
     }
 
-    void MoveEnnemy()
+    public void SlowMovement(float slowPercent)
     {
-        if (waypointIndex <= waypoints.Count - 1)
-        {
-            var targetPosition = waypoints[waypointIndex].transform.position;
-            var movementThisFrame = speed * Time.deltaTime;
+        speed = startSpeed * (1f - (slowPercent/100));
+    }
 
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementThisFrame);
+    public void TakingConstantDamage(float amount)
+    {
+        Invoke("TakingDamage",1f);
+    }
 
-            if (transform.position == targetPosition)
-            {
-                waypointIndex++;
-            }
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+    void Die()
+    {
+        Destroy(gameObject);
     }
 }

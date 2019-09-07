@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class BuildManager : MonoBehaviour
 {
+
     public static BuildManager instance;
-    public GameObject standardTurretPrefab;
+    public GameObject[] buildableTurrets;
     private GameObject turretToBuild;
 
     void Awake()
@@ -19,7 +20,12 @@ public class BuildManager : MonoBehaviour
 
     void Start()
     {
-        turretToBuild = standardTurretPrefab;
+        turretToBuild = buildableTurrets[0];
+    }
+
+    public void SetTurretToBuild(GameObject turret)
+    {
+        turretToBuild = turret;
     }
 
     public GameObject GetTurretToBuild()

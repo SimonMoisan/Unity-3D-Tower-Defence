@@ -9,6 +9,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] public float speed;
     [SerializeField] public float radius = 0f;
     public GameObject impactParticle;
+    private float damage;
 
     public void Seek(Transform _target)
     {
@@ -68,8 +69,13 @@ public class Bullet : MonoBehaviour
 
     void Damage(Transform ennemy)
     {
-        Destroy(ennemy.gameObject);
+        Ennemy ennemyGO = ennemy.GetComponent<Ennemy>();
+        ennemyGO.TakingDamage(damage);
     }
-
+    
+    public void setDamage(float _damage)
+    {
+        damage = _damage;
+    }
     
 }

@@ -96,13 +96,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 40
-  fireRate: 1
-  ennemyTag: Ennemy
-  rotationPoint: {fileID: 6715255312626291620}
-  rotationSpeed: 10
   bulletPrefab: {fileID: 6064541935020324937, guid: 0b8311f5005e7424990cbac8b0033127,
     type: 3}
+  fireRate: 2
+  bulletDamage: 10
+  useLaser: 0
+  lineRenderer: {fileID: 0}
+  ennemyTag: Ennemy
   firePoint: {fileID: 5501350359310675512}
+  rotationPoint: {fileID: 6715255312626291620}
+  rotationSpeed: 10
 --- !u!1 &6715255312626126724
 GameObject:
   m_ObjectHideFlags: 0

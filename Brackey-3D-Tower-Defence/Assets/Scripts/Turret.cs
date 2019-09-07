@@ -5,6 +5,7 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     private Transform target;
+    private Ennemy targetEnnemy;
 
     [Header("Attributes")]
     [SerializeField] public float range;
@@ -12,14 +13,16 @@ public class Turret : MonoBehaviour
     [Header("Use Bullet")]
     public GameObject bulletPrefab;
     [SerializeField] public float fireRate;
+    [SerializeField] public float bulletDamage;
     private float fireCountdown = 0f;
 
     [Header("Use Laser")]
     public bool useLaser = false;
+    [SerializeField] public int damageOverTime;
+    [SerializeField] [Range(0,100)] public float slowPercent;
     public LineRenderer lineRenderer;
 
     [Header("Unity Setup Fields")]
-
     public string ennemyTag = "Ennemy";
     [SerializeField] public Transform firePoint;
     [SerializeField] public Transform rotationPoint;
@@ -69,6 +72,7 @@ public class Turret : MonoBehaviour
         }
     }
 
+    //Instantiate bullet and we give its target and its damage value
     void ShootBullet()
     {
         GameObject bulletGO = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
@@ -76,12 +80,17 @@ public class Turret : MonoBehaviour
 
         if (bullet != null)
         {
+            bullet.setDamage(bulletDamage);
             bullet.Seek(target);
         }
     }
 
     void ShootLaser()
     {
+        targetEnnemy.TakingDamage(damageOverTime * Time.deltaTime);
+        targetEnnemy.SlowMovement(slowPercent);
+
+        //Graphic
         if (!lineRenderer.enabled)
         {
             lineRenderer.enabled = true;
@@ -90,14 +99,16 @@ public class Turret : MonoBehaviour
         lineRenderer.SetPosition(1, target.position);
     }
 
+    //Rotate turret toward its target
     void RotateTurretOnTarget()
     {
         Vector3 dir = target.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = Quaternion.Lerp(rotationPoint.rotation, lookRotation, Time.deltaTime * rotationSpeed).eulerAngles;
-        rotationPoint.rotation = Quaternion.Euler(-90f, rotation.y, 0f);
+        rotationPoint.rotation = Quaternion.Euler(-80f, rotation.y, 0f);
     }
 
+    //Rotate turret to initial position
     void RotateBackToNormal()
     {
         Quaternion initialRotation = Quaternion.LookRotation(initialRotationPosition);
@@ -105,12 +116,14 @@ public class Turret : MonoBehaviour
         rotationPoint.rotation = Quaternion.Euler(-90f, rotation.y, 0f);
     }
 
+    //Draw turret's ranges
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
     }
 
+    //Identify target
     void UpdateTarget()
     {
         //We are loonking for every ennemy in the game
@@ -118,6 +131,7 @@ public class Turret : MonoBehaviour
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnnemy = null;
 
+        //Identify closest ennemy
         foreach(GameObject ennemy in ennemies)
         {
             float distanceToEnnemy = Vector3.Distance(transform.position, ennemy.transform.position);
@@ -131,6 +145,7 @@ public class Turret : MonoBehaviour
         if(nearestEnnemy != null && shortestDistance <= range)
         {
             target = nearestEnnemy.transform;
+            targetEnnemy = target.GetComponent<Ennemy>();
         }
         else
         {
