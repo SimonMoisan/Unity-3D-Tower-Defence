@@ -2,6 +2,10 @@
 
 public class Shop : MonoBehaviour
 {
+    public TurretBlueprint gunTurret;
+    public TurretBlueprint rocketTurret;
+    public TurretBlueprint laserTurret;
+
     BuildManager buildManager;
 
     void Start()
@@ -9,18 +13,18 @@ public class Shop : MonoBehaviour
         buildManager = BuildManager.instance;
     }
 
-    public void PurchaseMachinGunTurret()
+    public void SelectMachinGunTurret()
     {
-        buildManager.SetTurretToBuild(buildManager.buildableTurrets[0]);
+        buildManager.SelectTurretToBuild(gunTurret);
     }
 
-    public void PurchaseRocketTurret()
+    public void SelectRocketTurret()
     {
-        buildManager.SetTurretToBuild(buildManager.buildableTurrets[1]);
+        buildManager.SelectTurretToBuild(rocketTurret);
     }
 
-    public void PurchaseLaserTurret()
+    public void SelectLaserTurret()
     {
-        buildManager.SetTurretToBuild(buildManager.buildableTurrets[2]);
+        buildManager.SelectTurretToBuild(laserTurret);
     }
 }

@@ -43,7 +43,7 @@ public class EnnemyMovement : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            ennemy.ReashEnd();
         }
     }
 }

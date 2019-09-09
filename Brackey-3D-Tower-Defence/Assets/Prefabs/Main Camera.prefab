@@ -96,3 +96,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b7d37e59219e09448a6f25b69e9cb6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panSpeed: 30
+  panBoarderThickness: 10
+  scrollSpeed: 2
+  minX: -80
+  maxX: 40
+  minZ: 0
+  maxZ: 80
+  minZoom: 10
+  maxZoom: 80

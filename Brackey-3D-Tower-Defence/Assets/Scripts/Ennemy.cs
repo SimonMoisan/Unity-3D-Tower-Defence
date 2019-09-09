@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ennemy : MonoBehaviour
 {
     [SerializeField] public float health;
-    [SerializeField] public float worth;    //Money won when killed
+    [SerializeField] public int worth;    //Money won when killed
     [SerializeField] public float startSpeed;
     [HideInInspector] public float speed;
 
@@ -21,7 +21,7 @@ public class Ennemy : MonoBehaviour
     public void TakingDamage(float amount)
     {
         health -= amount;
-        if(health <= 0f)
+        if (health <= 0f)
         {
             Die();
         }
@@ -29,16 +29,23 @@ public class Ennemy : MonoBehaviour
 
     public void SlowMovement(float slowPercent)
     {
-        speed = startSpeed * (1f - (slowPercent/100));
+        speed = startSpeed * (1f - (slowPercent / 100));
     }
 
     public void TakingConstantDamage(float amount)
     {
-        Invoke("TakingDamage",1f);
+        Invoke("TakingDamage", 1f);
+    }
+
+    public void ReashEnd()
+    {
+        PlayerStats.lives -= 1;
+        Destroy(gameObject);
     }
 
     void Die()
     {
+        PlayerStats.money += worth;
         Destroy(gameObject);
     }
 }

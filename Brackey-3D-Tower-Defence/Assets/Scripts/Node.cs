@@ -5,9 +5,11 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
     public Color hoverColor;
+    public Color notEnoughtMoneyColor;
     public Vector3 offsetPosition;
 
-    private GameObject turret;
+    [Header("Optionnal")]
+    public GameObject turret;
 
     private Renderer rend;
     private Color startColor;
@@ -23,7 +25,7 @@ public class Node : MonoBehaviour
 
     void OnMouseDown()
     {
-        if(buildManager.GetTurretToBuild() == null)
+        if(!buildManager.CanBuild)
         {
             return;
         }
@@ -34,19 +36,30 @@ public class Node : MonoBehaviour
             return;
         }
 
-        //Build turret
-        GameObject turretToBuild = BuildManager.instance.GetTurretToBuild();
+        buildManager.BuildTurretOn(this);
+    }
 
-        turret = Instantiate(turretToBuild, transform.position + offsetPosition, transform.rotation);
+    public Vector3 GetBuildPosition()
+    {
+        return transform.position + offsetPosition;
     }
 
     void OnMouseEnter()
     {
-        if (buildManager.GetTurretToBuild() == null)
+        if (!buildManager.CanBuild)
         {
             return;
         }
-        rend.material.color = hoverColor;
+
+        if(buildManager.HasMoney)
+        {
+            rend.material.color = hoverColor;
+        }
+        else
+        {
+            rend.material.color = notEnoughtMoneyColor;
+        }
+        
     }
 
     void OnMouseExit()

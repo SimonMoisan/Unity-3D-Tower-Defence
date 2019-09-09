@@ -5,20 +5,45 @@ using UnityEngine;
 
 public class WaveSpawner : MonoBehaviour
 {
-    [SerializeField] List<WaveConfig> waveConfigs;
-    int startingWave = 0;
+    [SerializeField] public List<WaveConfig> waveConfigs;
+    [SerializeField] public float timeBetweenWaves = 5f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        StartCoroutine(SpawnLoopWave(1));
-        //StartCoroutine(SpawnAllWaves());
-    }
+    private float initialCountdown = 3f;
+    private float countdown = 0f;
+    private int startingWave = 0;
+
+    public bool startWave = false;
+    public bool waveIsStarted = false;
+    public bool waveEnd = true;
 
     // Update is called once per frame
     void Update()
     {
+        if(startWave)
+        {
+            if (initialCountdown <= 0f && !waveIsStarted)
+            {
+                LaunchWaves();
+                startWave = false;
+                waveIsStarted = true;
+            }
+            initialCountdown -= Time.deltaTime;
+        }
+    }
 
+    public void StartWave()
+    {
+        if(waveEnd)
+        {
+            startWave = true;
+            waveEnd = false;
+        }
+    }
+
+    void LaunchWaves()
+    {
+        StartCoroutine(SpawnLoopWave(2));
+        //StartCoroutine(SpawnAllWaves());
     }
 
     private IEnumerator SpawnLoopWave(int loopNumber)
@@ -41,15 +66,19 @@ public class WaveSpawner : MonoBehaviour
 
     private IEnumerator SpawnAllEnnemiesInWave(WaveConfig waveConfig)
     {
-        for (int i = 0; i < waveConfig.GetNumberOfEnnemies(); i++)
+        if(!waveEnd)
         {
-            Instantiate(
-                waveConfig.GetEnnemyPrefab(),
-                waveConfig.GetWaypoints()[0].transform.position,
-                Quaternion.identity);
-            yield return new WaitForSeconds(waveConfig.GetSpawnRate());
+            yield return new WaitForSeconds(timeBetweenWaves);
+            for (int i = 0; i < waveConfig.GetNumberOfEnnemies(); i++)
+            {
+                Instantiate(
+                    waveConfig.GetEnnemyPrefab(),
+                    waveConfig.GetWaypoints()[0].transform.position,
+                    Quaternion.identity);
+                yield return new WaitForSeconds(waveConfig.GetSpawnRate());
+            }
+            waveEnd = true;
+            waveIsStarted = false;
         }
-
     }
-
 }

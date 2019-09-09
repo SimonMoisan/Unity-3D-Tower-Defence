@@ -69,8 +69,10 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1856394898342010514, guid: eb39152de50cc3e4c946a1e66ef46724,
     type: 3}
   fireRate: 0.2
-  bulletDamage: 20
+  bulletDamage: 50
   useLaser: 0
+  damageOverTime: 0
+  slowPercent: 0
   lineRenderer: {fileID: 0}
   ennemyTag: Ennemy
   firePoint: {fileID: 6352762055814190655}

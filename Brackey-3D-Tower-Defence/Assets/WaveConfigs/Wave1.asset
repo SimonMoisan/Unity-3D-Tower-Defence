@@ -18,5 +18,5 @@ MonoBehaviour:
     type: 3}
   spawnRate: 0.5
   spawnRadomFactor: 0.3
-  numberOfEnnemies: 20
+  numberOfEnnemies: 5
   moveSpeed: 2
