@@ -32,11 +32,6 @@ public class Ennemy : MonoBehaviour
         speed = startSpeed * (1f - (slowPercent / 100));
     }
 
-    public void TakingConstantDamage(float amount)
-    {
-        Invoke("TakingDamage", 1f);
-    }
-
     public void ReashEnd()
     {
         PlayerStats.lives -= 1;
